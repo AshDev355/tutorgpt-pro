@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -11,6 +12,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class User(BaseModel):
+    name:str
+    email:str
+    password:str
+
+
 @app.get("/")
 def home():
     return {"message": "TutorGPT Backend Running"}
+
+@app.post("/signup")
+def signup(user:User):
+    return {
+        "message":f"Welcome {user.name}"
+    }
